@@ -14,22 +14,22 @@ import SettingsPanel from './SettingsPanel';
 const initialNodes = [];
 const initialEdges = [];
 
-const nodeTypes = { custom: CustomNode };
-
 const CustomNode = ({ data }) => {
     return (
         <div>
             <div className="bg-green-100 border rounded shadow text-center">
-        <div className="font-semibold text-black">Send Message</div>
-        </div>
+                <div className="font-semibold text-black">Send Message</div>
+            </div>
             <div className="p-4 bg-white-100 border rounded shadow">
-            <div>{data.text}</div>
-            <Handle type="source" position="right" className="w-3 h-3 bg-blue-500" />
-            <Handle type="target" position="left" className="w-3 h-3 bg-blue-500" />
-        </div>
+                <div>{data.text}</div>
+                <Handle type="source" position="right" className="w-3 h-3 bg-blue-500" />
+                <Handle type="target" position="left" className="w-3 h-3 bg-blue-500" />
+            </div>
         </div>
     );
 };
+
+const nodeTypes = { custom: CustomNode };
 
 const FlowCanvas = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
