@@ -10,6 +10,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import NodesPanel from './NodePanel';
 import SettingsPanel from './SettingsPanel';
+import Toast from './Toast';
 
 const initialNodes = [];
 const initialEdges = [];
@@ -35,11 +36,14 @@ const FlowCanvas = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [selectedNode, setSelectedNode] = useState(null);
+    const [toastMessage, setToastMessage] = useState(null);
+    const [toastType, setToastType] = useState(null);
 
     const onConnect = (params) => {
         // Ensure only one edge can originate from a source handle
         if (edges.some(edge => edge.source === params.source)) {
-            alert('A source handle can only have one edge.');
+            setToastMessage('A source handle can only have one edge.');
+            setToastType("Error");
             return;
         }
         setEdges((eds) => addEdge(params, eds));
@@ -89,22 +93,32 @@ const FlowCanvas = () => {
             node.data && node.data.type === 'textNode' && edges.every(edge => edge.target !== node.id)
         );
         if (emptyTargetHandles.length > 1) {
-            alert("Error: More than one node has empty target handles.");
+            setToastMessage("Error: More than one node has empty target handles.");
+            setToastType("Error");
         } else {
-            console.log('Flow saved', { nodes, edges });
+            setToastMessage("Message saved succefully.");
+            setToastType("Success");
         }
     };
 
     return (
         <div>
             <div className="flex">
-                <nav className="bg-gray-300 border-gray-400 dark:bg-gray-900 fixed w-full z-20 top-0 start-0 dark:border-gray-600 flex justify-end">
-                    <button
-                        onClick={saveFlow}
-                        className="m-4 px-4 py-2 text-white bg-blue-500 rounded shadow"
-                    >
-                        Save Changes
-                    </button>
+                <nav className="bg-gray-300 border-gray-400 dark:bg-gray-900 fixed w-full z-20 top-0 start-0 dark:border-gray-600 flex justify-between items-center px-4">
+                    <div className="flex-1"></div>
+                    {toastMessage && (
+                        <div className="flex-1 flex justify-center">
+                            <Toast message={toastMessage} type={toastType} onClose={() => { setToastMessage(null); setToastType(null) }} />
+                        </div>
+                    )}
+                    <div className="flex-1 flex justify-end">
+                        <button
+                            onClick={saveFlow}
+                            className="m-4 px-4 py-2 text-white bg-blue-500 rounded shadow"
+                        >
+                            Save Changes
+                        </button>
+                    </div>
                 </nav>
             </div>
             <div className="flex h-screen">
