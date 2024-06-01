@@ -53,13 +53,13 @@ const Toast = ({ message, type, onClose }) => {
     }, [onClose]);
 
     return (
-        <>
+        <div>
             {type === 'Error' ? (
                 <ErrorToast message={message} onClose={onClose} />
             ) : (
                 <SuccessToast message={message} onClose={onClose} />
             )}
-        </>
+        </div>
     );
 };
 
