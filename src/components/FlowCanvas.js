@@ -7,6 +7,7 @@ import ReactFlow, {
     useNodesState,
     useEdgesState,
     Handle,
+    MarkerType
 } from 'react-flow-renderer';
 import NodesPanel from './NodePanel';
 import SettingsPanel from './SettingsPanel';
@@ -42,11 +43,11 @@ const FlowCanvas = () => {
     const onConnect = (params) => {
         // Ensure only one edge can originate from a source handle
         if (edges.some(edge => edge.source === params.source)) {
-            setToastMessage('A source handle can only have one edge.');
+            setToastMessage('Cannot save flow.');
             setToastType("Error");
             return;
         }
-        setEdges((eds) => addEdge(params, eds));
+        setEdges((eds) => addEdge({ ...params, markerEnd: { type: MarkerType.Arrow } }, eds));
     };
 
     const onElementClick = (_, element) => {
@@ -93,10 +94,10 @@ const FlowCanvas = () => {
             node.data && node.data.type === 'textNode' && edges.every(edge => edge.target !== node.id)
         );
         if (emptyTargetHandles.length > 1) {
-            setToastMessage("Error: More than one node has empty target handles.");
+            setToastMessage("Cannot save flow.");
             setToastType("Error");
         } else {
-            setToastMessage("Message saved succefully.");
+            setToastMessage("Flow saved successfully.");
             setToastType("Success");
         }
     };
@@ -149,7 +150,6 @@ const FlowCanvas = () => {
                 ) : (
                     <NodesPanel />
                 )}
-
             </div>
         </div>
     );
