@@ -20,7 +20,7 @@ const CustomNode = ({ data }) => {
     return (
         <div>
             <div className="bg-green-100 border rounded shadow text-center">
-                <div className="font-semibold text-black">Send Message</div>
+               <div className="font-semibold text-black">Send Message</div>
             </div>
             <div className="p-4 bg-white-100 border rounded shadow">
                 <div>{data.text}</div>
